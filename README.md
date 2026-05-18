@@ -86,6 +86,8 @@ Open the URL shown in the terminal — usually [`http://localhost:5173`](http://
 
 ## 🚀 Deploy to Vercel
 
+This app uses [TanStack Start with the Nitro Vercel preset](https://vercel.com/docs/frameworks/full-stack/tanstack-start). The build writes `.vercel/output` automatically — **do not** set a custom output directory in Vercel.
+
 1. **Push to GitHub** and import the repo at [vercel.com/new](https://vercel.com/new).
 
 2. **Create a Neon database** at [neon.tech](https://neon.tech) and copy the connection string.
@@ -98,13 +100,15 @@ Open the URL shown in the terminal — usually [`http://localhost:5173`](http://
    | `JWT_SECRET` | 32+ random characters |
    | `VITE_API_BASE_URL` | `/api` |
 
-4. **Deploy.** The `postinstall` script runs `prisma generate` automatically — no extra steps.
+4. **Build command:** `npm run build` (default). `postinstall` runs `prisma generate` automatically.
 
-5. **Migrate the production database** by running the following once with your production `DATABASE_URL` set locally (or via the Neon SQL console):
+5. **Migrate the production database** once (locally with prod `DATABASE_URL` or Neon console):
 
    ```bash
    DATABASE_URL="your-prod-url" npx prisma db push
    ```
+
+6. **Redeploy** after adding env vars if the first deploy failed.
 
 ---
 
@@ -124,13 +128,13 @@ Open the URL shown in the terminal — usually [`http://localhost:5173`](http://
 
 ```
 fitpulse/
-├── api/                    # Vercel serverless entry — routes /api/*
 ├── prisma/                 # Schema and migration history
 ├── plugins/                # Vite dev-server API middleware
 └── src/
     ├── components/         # Shared UI and layout components
     ├── lib/                # API client, Zustand store, types, utilities
     ├── routes/             # TanStack Router file-based routes
+    ├── start.ts            # TanStack Start middleware (API + errors)
     └── server/             # API handlers, auth helpers, Prisma client, seed
 ```
 
@@ -153,7 +157,7 @@ fitpulse/
 ### Backend
 | Library | Role |
 |---|---|
-| [Vercel Functions](https://vercel.com/docs/functions) | Serverless API handlers |
+| [Nitro](https://nitro.build) + [Vercel](https://vercel.com/docs/frameworks/full-stack/tanstack-start) | SSR and API on Vercel Functions |
 | [Prisma](https://prisma.io) | Type-safe ORM |
 | [Neon](https://neon.tech) | Serverless PostgreSQL |
 | [jose](https://github.com/panva/jose) | JWT signing & verification |
