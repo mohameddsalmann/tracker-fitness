@@ -49,20 +49,16 @@ npm install
 
 ### 2 — Configure environment
 
-```bash
-cp .env.example .env.local
-```
-
-Open `.env.local` and fill in:
+Create a `.env` file in the root directory:
 
 ```env
-# Neon PostgreSQL connection string
-DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
+# Neon Serverless PostgreSQL connection string (from neon.tech)
+DATABASE_URL="postgresql://neondb_owner:password@ep-curly-block-aqyb4lk9.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 # At least 32 random characters — generate with: openssl rand -base64 32
 JWT_SECRET="your-super-secret-key-here"
 
-# Leave as-is for local dev
+# API prefix (leave as-is for local dev)
 VITE_API_BASE_URL=/api
 ```
 
